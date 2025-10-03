@@ -10,7 +10,7 @@ services:
       - "3000:3000"
     restart: unless-stopped
     networks:
-      - app-network
+      - dokploy-network
 
   frontend:
     container_name: quetzal-frontend
@@ -21,7 +21,7 @@ services:
       - backend
     restart: on-failure:5
     networks:
-      - app-network
+      - dokploy-network
     labels:
       - traefik.enable=true
       - traefik.http.routers.frontend-app-quetzal.rule=Host(`entorno-interactivo.escod.com.gt`)
@@ -30,5 +30,5 @@ services:
 
 
 networks:
-  app-network:
+  dokploy-network:
     external: true
