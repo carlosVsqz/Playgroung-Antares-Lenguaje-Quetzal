@@ -6,14 +6,8 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    expose:
-      - "3501"
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:3501/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+    ports:
+      - "3501:3501"
     networks:
       - dokploy-network
 
@@ -23,8 +17,7 @@ services:
     ports:
       - "3500:80"
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
     restart: on-failure:5
     networks:
       - dokploy-network
