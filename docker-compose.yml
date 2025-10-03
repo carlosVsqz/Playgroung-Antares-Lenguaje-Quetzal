@@ -17,8 +17,7 @@ services:
     ports:
       - "3500:80"
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
     restart: on-failure:5
     networks:
       - dokploy-network
