@@ -24,7 +24,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.frontend-app-quetzal.rule=Host(`entorno-interactivo.escod.com.gt`)
-      - traefik.http.routers.frontend-app-quetzal.entrypoints=websecure
+      - traefik.http.routers.frontend-app-quetzal.entrypoints=web
       - traefik.http.services.frontend-app-quetzal.loadbalancer.server.port=3500
 
 networks:
