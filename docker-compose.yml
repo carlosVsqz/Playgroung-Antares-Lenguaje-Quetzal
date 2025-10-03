@@ -7,7 +7,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3501:3000"
     restart: unless-stopped
     networks:
       - dokploy-network
@@ -16,7 +16,7 @@ services:
     container_name: quetzal-frontend
     build: ./frontend
     ports:
-      - "8080:80"
+      - "3500:80"
     depends_on:
       - backend
     restart: on-failure:5
