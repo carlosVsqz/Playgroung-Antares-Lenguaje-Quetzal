@@ -74,13 +74,14 @@ export default function CodePlayground() {
       setActiveFileId(fileNodes[0].children[0].id);
     }
   }
-
   const monaco = useMonaco();
 
   useEffect(() => {
     handeInit();
   }, []);
 
+
+  // use monaco load from https://stackoverflow.com/questions/78779441/monaco-editor-custom-language
   useEffect(() => {
     if (!monaco) return
     registerQuetzalLanguage(monaco);
@@ -90,11 +91,10 @@ export default function CodePlayground() {
     files.flatMap(f => f.children || []).find(f => f.id === activeFileId);
 
   const currentCode = activeFileId ? fileContents[activeFileId] || "" : "";
-
   const handleFileSelect = (file: FileNode) => {
     if (file.type === "file") {
       setActiveFileId(file.id);
-      setShowFileExplorer(false); // Cerrar explorer en móvil después de seleccionar
+      setShowFileExplorer(false);
     }
   }
 
@@ -158,7 +158,6 @@ export default function CodePlayground() {
 
   return (
     <div className="flex flex-col gap-2 h-full min-h-0">
-      {/* Botón para mostrar/ocultar file explorer en móviles */}
       <div className="flex sm:hidden">
         <Button
           variant="outline"
@@ -170,9 +169,7 @@ export default function CodePlayground() {
         </Button>
       </div>
 
-      {/* Layout principal */}
       <div className="flex flex-col sm:flex-row gap-2 flex-1 min-h-0">
-        {/* File Explorer - Oculto en móviles por defecto */}
         <div className={`${showFileExplorer ? 'flex' : 'hidden'} sm:flex w-full sm:w-48 flex-shrink-0`}>
           <Card className="h-full bg-[#010409] border-[#30363d] overflow-hidden flex flex-col w-full">
             <div className="flex-1 min-h-0 overflow-auto">
@@ -185,41 +182,38 @@ export default function CodePlayground() {
           </Card>
         </div>
 
-        {/* Editor - Espacio principal */}
         <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden flex flex-col flex-1 min-h-0">
-          {/* Header del editor compacto */}
-          <div className="flex items-center justify-between border-b border-[#30363d] px-2 py-1 bg-[#161b22] flex-shrink-0">
-            <div className="flex items-center gap-1 min-w-0 flex-1">
-              <span className="font-mono text-xs text-[#7d8590] truncate">{getLanguageLabel()}</span>
+          <div className="flex items-center justify-between border-b border-[#30363d] px-4 py-2 bg-[#161b22] flex-shrink-0">
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-sm text-[#7d8590]">{getLanguageLabel()}</span>
               {activeFile && (
-                <span className="font-mono text-xs text-foreground truncate ml-1">
+                <span className="font-mono text-sm text-foreground">
                   {getFullFilename()}
                 </span>
               )}
             </div>
-            <div className="flex gap-1 flex-shrink-0 ml-1">
-              <Button size="sm" variant="ghost" onClick={handleCopy} className="h-5 w-5 p-0 hover:bg-[#21262d]">
+            <div className="flex gap-1">
+              <Button size="sm" variant="ghost" onClick={handleCopy} className="h-7 w-7 p-0 hover:bg-[#21262d]">
                 {copied ? (
-                  <Check className="h-2.5 w-2.5 text-[#56d364]"/>
+                  <Check className="h-3.5 w-3.5 text-[#56d364]"/>
                 ) : (
-                  <Copy className="h-2.5 w-2.5 text-[#7d8590]"/>
+                  <Copy className="h-3.5 w-3.5 text-[#7d8590]"/>
                 )}
               </Button>
-              <Button size="sm" variant="ghost" onClick={handleClear} className="h-5 w-5 p-0 hover:bg-[#21262d]">
-                <RotateCcw className="h-2.5 w-2.5 text-[#7d8590]"/>
+              <Button size="sm" variant="ghost" onClick={handleClear} className="h-7 w-7 p-0 hover:bg-[#21262d]">
+                <RotateCcw className="h-3.5 w-3.5 text-[#7d8590]"/>
               </Button>
               <Button
                 onClick={handleRun}
                 disabled={isRunning || !activeFile}
-                className="bg-[#238636] text-white hover:bg-[#2ea043] h-5 text-[10px] px-2"
+                className="bg-[#238636] text-white hover:bg-[#2ea043] h-8"
               >
-                <Play className="h-2.5 w-2.5 mr-1"/>
-                Run
+                <Play className="h-3.5 w-3.5 mr-2"/>
+                {isRunning ? "Ejecutando..." : "Ejecutar código"}
               </Button>
             </div>
           </div>
 
-          {/* Editor */}
           <div className="flex-1 min-h-0">
             <Editor
               height="100%"
@@ -228,27 +222,24 @@ export default function CodePlayground() {
               value={currentCode}
               onChange={(e) => e !== undefined && handleCodeChange(e)}
               options={{
-                minimap: {enabled: false},
-                fontSize: 12,
+                minimap: {enabled: true},
+                fontSize: 14,
                 lineNumbers: "on",
                 scrollBeyondLastLine: false,
                 automaticLayout: true,
-                padding: { top: 4, bottom: 4 },
-                wordWrap: "on"
               }}
             />
           </div>
         </Card>
       </div>
 
-      {/* Consola de resultados compacta */}
-      <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden flex flex-col h-24 flex-shrink-0">
-        <div className="border-b border-[#30363d] px-2 py-1 bg-[#161b22]">
-          <h3 className="font-mono text-xs font-semibold text-foreground">Resultado</h3>
+      <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden flex flex-col h-60 flex-shrink-0">
+        <div className="border-b border-[#30363d] px-4 py-2 bg-[#161b22]">
+          <h3 className="font-mono text-sm font-semibold text-foreground">Resultado</h3>
         </div>
-        <div className="flex-1 p-2 overflow-auto">
-          <pre className="font-mono text-xs text-[#e6edf3] whitespace-pre-wrap leading-tight">
-            {output || "Ejecuta tu código para ver el resultado... 🤓"}
+        <div className="flex-1 p-4 overflow-auto">
+          <pre className="font-mono text-sm text-[#e6edf3] whitespace-pre-wrap">
+            {output || "Ejecuta tu código para ver el resultado aquí... 🤓"}
           </pre>
         </div>
       </Card>
