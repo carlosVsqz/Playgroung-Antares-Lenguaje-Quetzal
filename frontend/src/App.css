@@ -32,3 +32,27 @@ img {
 * {
   -webkit-overflow-scrolling: touch;
 }
+
+.wave-text {
+  display: inline-block;
+  animation: subtle-wave 4s ease-in-out infinite;
+}
+
+@keyframes subtle-wave {
+  0%, 100% {
+    transform: translateY(0);
+    color: inherit;
+  }
+  25% {
+    transform: translateY(-2px);
+    color: #93c5fd;
+  }
+  50% {
+    transform: translateY(0);
+    color: #d8b4fe;
+  }
+  75% {
+    transform: translateY(-1px);
+    color: #6ee7b7;
+  }
+}
