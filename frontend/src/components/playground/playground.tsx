@@ -61,6 +61,7 @@ export default function CodePlayground() {
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showFileExplorer, setShowFileExplorer] = useState(false);
 
   const handeInit = () => {
     const fileNodes = transformExamplesToFileNodes(examplesData);
@@ -83,13 +84,6 @@ export default function CodePlayground() {
   // use monaco load from https://stackoverflow.com/questions/78779441/monaco-editor-custom-language
   useEffect(() => {
     if (!monaco) return
-    // // Register a new language
-    // monaco.languages.register({ id: 'quetzal' });
-    // // Register a tokens provider for the language
-    // monaco.languages.setMonarchTokensProvider('quetzal', langDEF);
-    // // Set the editing configuration for the language
-    // monaco.editor.defineTheme('quetzal', qzTheme);
-
     registerQuetzalLanguage(monaco);
   }, [monaco]);
 
@@ -99,7 +93,8 @@ export default function CodePlayground() {
   const currentCode = activeFileId ? fileContents[activeFileId] || "" : "";
   const handleFileSelect = (file: FileNode) => {
     if (file.type === "file") {
-      setActiveFileId(file.id)
+      setActiveFileId(file.id);
+      setShowFileExplorer(false);
     }
   }
 
@@ -118,9 +113,9 @@ export default function CodePlayground() {
 
       if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
       const data: CodeResponse = await res.json();
-      setOutput(data.stdout || data.stderr || "⚠️ No output");
+      setOutput(data.stdout || data.stderr || "⚠️ Sin salida...");
     } catch (error) {
-      setOutput(`❌ Error: ${error instanceof Error ? error.message : "Unknown error"}`)
+      setOutput(`❌ Error: ${error instanceof Error ? error.message : "Error desconocido"}`)
     } finally {
       setIsRunning(false)
     }
@@ -131,7 +126,6 @@ export default function CodePlayground() {
       handeInit();
     }
     setOutput("");
-    // setActiveFileId(null);
   }
 
   const handleCopy = async () => {
@@ -142,7 +136,6 @@ export default function CodePlayground() {
 
   const getLanguageLabel = () => {
     if (!activeFile) return ""
-
     return activeFile.language === "qz" && "quetzal";
   }
 
@@ -154,31 +147,43 @@ export default function CodePlayground() {
       })
     }
   }
+
   const getFullFilename = () => {
     if (!activeFile) return "";
-
     if (activeFile.metadata?.fullFilename) {
       return activeFile.metadata.fullFilename;
     }
-
     return `${activeFile.name}.${activeFile.language}`;
   };
 
   return (
-    <div className="flex flex-col gap-4 h-[calc(100vh-200px)]">
-      <div className="flex gap-4 flex-1">
-        <div className="w-64 flex-shrink-0">
-          <Card className="h-full bg-[#010409] border-[#30363d] overflow-hidden">
-            <FileExplorer
-              files={files}
-              activeFileId={activeFileId}
-              onFileSelect={handleFileSelect}
-            />
+    <div className="flex flex-col gap-2 h-full min-h-0">
+      <div className="flex sm:hidden">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setShowFileExplorer(!showFileExplorer)}
+          className="w-full text-xs bg-[#161b22] border-[#30363d] text-[#e6edf3]"
+        >
+          {showFileExplorer ? "📂 Ocultar Explorador" : "📂 Mostrar Explorador"}
+        </Button>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-2 flex-1 min-h-0">
+        <div className={`${showFileExplorer ? 'flex' : 'hidden'} sm:flex w-full sm:w-48 flex-shrink-0`}>
+          <Card className="h-full bg-[#010409] border-[#30363d] overflow-hidden flex flex-col w-full">
+            <div className="flex-1 min-h-0 overflow-auto">
+              <FileExplorer
+                files={files}
+                activeFileId={activeFileId}
+                onFileSelect={handleFileSelect}
+              />
+            </div>
           </Card>
         </div>
 
-        <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden flex flex-col flex-1">
-          <div className="flex items-center justify-between border-b border-[#30363d] px-4 py-2 bg-[#161b22]">
+        <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden flex flex-col flex-1 min-h-0">
+          <div className="flex items-center justify-between border-b border-[#30363d] px-4 py-2 bg-[#161b22] flex-shrink-0">
             <div className="flex items-center gap-2">
               <span className="font-mono text-sm text-[#7d8590]">{getLanguageLabel()}</span>
               {activeFile && (
@@ -198,7 +203,6 @@ export default function CodePlayground() {
               <Button size="sm" variant="ghost" onClick={handleClear} className="h-7 w-7 p-0 hover:bg-[#21262d]">
                 <RotateCcw className="h-3.5 w-3.5 text-[#7d8590]"/>
               </Button>
-
               <Button
                 onClick={handleRun}
                 disabled={isRunning || !activeFile}
@@ -210,26 +214,26 @@ export default function CodePlayground() {
             </div>
           </div>
 
-          <Editor
-            height="100%"
-            language="quetzal"
-            theme="hc-black"
-            value={currentCode}
-            onChange={(e) => {
-              e !== undefined && handleCodeChange(e);
-            }}
-            options={{
-              minimap: {enabled: true},
-              fontSize: 14,
-              lineNumbers: "on",
-              scrollBeyondLastLine: false,
-              automaticLayout: true,
-            }}
-          />
+          <div className="flex-1 min-h-0">
+            <Editor
+              height="100%"
+              language="quetzal"
+              theme="hc-black"
+              value={currentCode}
+              onChange={(e) => e !== undefined && handleCodeChange(e)}
+              options={{
+                minimap: {enabled: true},
+                fontSize: 14,
+                lineNumbers: "on",
+                scrollBeyondLastLine: false,
+                automaticLayout: true,
+              }}
+            />
+          </div>
         </Card>
       </div>
 
-      <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden flex flex-col h-48">
+      <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden flex flex-col h-60 flex-shrink-0">
         <div className="border-b border-[#30363d] px-4 py-2 bg-[#161b22]">
           <h3 className="font-mono text-sm font-semibold text-foreground">Resultado</h3>
         </div>

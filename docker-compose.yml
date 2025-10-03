@@ -7,15 +7,26 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    restart: unless-stopped
+      - "3501:3501"
+    networks:
+      - dokploy-network
 
   frontend:
     container_name: quetzal-frontend
     build: ./frontend
     ports:
-      - "8080:80"
+      - "3500:80"
     depends_on:
       - backend
-    restart: unless-stopped
+    restart: on-failure:5
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend-app-quetzal.rule=Host(`entorno-interactivo.escod.com.gt`)
+      - traefik.http.routers.frontend-app-quetzal.entrypoints=websecure
+      - traefik.http.services.frontend-app-quetzal.loadbalancer.server.port=3500
 
+networks:
+  dokploy-network:
+    external: true

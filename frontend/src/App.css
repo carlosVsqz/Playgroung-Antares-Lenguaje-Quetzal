@@ -1,0 +1,34 @@
+/* Reset crítico para evitar scroll */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Mejoras de responsividad */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+/* Utilidad para limitar líneas de texto */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Asegurar que las imágenes no desborden */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mejora de rendimiento para scroll */
+* {
+  -webkit-overflow-scrolling: touch;
+}
