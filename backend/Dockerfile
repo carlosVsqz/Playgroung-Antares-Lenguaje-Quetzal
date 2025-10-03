@@ -27,5 +27,5 @@ RUN quetzal --version
 
 COPY --from=builder /app/target/release/patiodejuegoQZB /app/server
 
-EXPOSE 3000
+EXPOSE 3501
 CMD ["./server"]
