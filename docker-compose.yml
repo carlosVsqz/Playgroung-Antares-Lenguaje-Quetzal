@@ -22,6 +22,12 @@ services:
     restart: on-failure:5
     networks:
       - app-network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend-app-quetzal.rule=Host(`entorno-interactivo.escod.com.gt`)
+      - traefik.http.routers.frontend-app-quetzal.entrypoints=web
+      - traefik.http.services.frontend-app-quetzal.loadbalancer.server.port=8080
+
 
 networks:
   app-network:
