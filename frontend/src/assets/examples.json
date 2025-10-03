@@ -1,0 +1,60 @@
+{
+  "examples": [
+    {
+      "title": "Ejemplos básicos",
+      "content": [
+        {
+          "id": 1,
+          "title": "Hola mundo",
+          "filename": "hola mundo.qz",
+          "content": "consola.mostrar_exito(\"Hola desde Lenguaje Quetzal\")"
+        },
+        {
+          "id": 2,
+          "title": "Variables y tipos",
+          "filename": "variables.qz",
+          "content": "entero edad = 25\nnúmero salario = 1250.50\ntexto nombre = \"Ana\"\nlog activo = verdadero\nlista<texto> habilidades = [\"Quetzal\", \"Rust\", \"JSON\"]"
+        },
+        {
+          "id": 3,
+          "title": "Operaciones matemáticas",
+          "filename": "operaciones.qz",
+          "content": "número resultado = 10.5 + 5.25\nnúmero diferencia = resultado - 3\nnúmero producto = resultado * 2\nnúmero division = resultado / 3\nconsola.mostrar(t\"Resultado final: {division}\")"
+        }
+      ]
+    },
+    {
+      "title": "Condicionales",
+      "content": [
+        {
+          "id": 1,
+          "title": "Condicionales simples",
+          "filename": "condicionales.qz",
+          "content": "entero edad = 20\n\nsi (edad >= 18) {\n    consola.mostrar(\"Es mayor de edad\")\n} sino {\n    consola.mostrar(\"Es menor de edad\")\n}"
+        }
+      ]
+    },
+    {
+      "title": "Bucles",
+      "content": [
+        {
+          "id": 1,
+          "title": "Bucles básicos",
+          "filename": "bucles.qz",
+          "content": "para (entero var i = 0; i < 3; i++) {\n    consola.mostrar(t\"Iteración {i}\")\n}"
+        }
+      ]
+    },
+    {
+      "title": "Funciones",
+      "content": [
+        {
+          "id": 1,
+          "title": "Funciones básicas",
+          "filename": "funciones.qz",
+          "content": "texto saludar(texto nombre) {\n    retornar \"Hola \" + nombre\n}\n\nconsola.mostrar(saludar(\"María\"))"
+        }
+      ]
+    }
+  ]
+}

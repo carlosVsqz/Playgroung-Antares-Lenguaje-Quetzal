@@ -1,0 +1,21 @@
+version: "3.9"
+
+services:
+  backend:
+    container_name: quetzal-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  frontend:
+    container_name: quetzal-frontend
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
