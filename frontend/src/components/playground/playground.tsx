@@ -62,6 +62,7 @@ export default function CodePlayground() {
   const [isRunning, setIsRunning] = useState(false);
   const [copied, setCopied] = useState(false);
   const [showFileExplorer, setShowFileExplorer] = useState(false);
+  const [isValidToSend, setIsValidToSend] = useState(false);
 
   const handeInit = () => {
     const fileNodes = transformExamplesToFileNodes(examplesData);
@@ -101,6 +102,10 @@ export default function CodePlayground() {
   const handleEditorDidMount = (monacoInstance: typeof monaco) => {
     setupQuetzalValidation(monacoInstance);
   };
+
+  const handleEditorValidate = (markers: monaco.editor.IMarker[]) => {
+    setIsValidToSend(markers.length !== 0);
+  }
   const handleRun = async () => {
     if (!activeFile || !activeFileId) return
 
@@ -209,7 +214,7 @@ export default function CodePlayground() {
               </Button>
               <Button
                 onClick={handleRun}
-                disabled={isRunning || !activeFile}
+                disabled={isRunning || !activeFile || isValidToSend}
                 className="bg-[#238636] text-white hover:bg-[#2ea043] h-8"
               >
                 <Play className="h-3.5 w-3.5 mr-2"/>
@@ -225,6 +230,7 @@ export default function CodePlayground() {
               theme="quetzal"
               value={currentCode}
               beforeMount={handleEditorDidMount}
+              onValidate={handleEditorValidate}
               onChange={(e) => e !== undefined && handleCodeChange(e)}
               options={{
                 minimap: {enabled: true},
