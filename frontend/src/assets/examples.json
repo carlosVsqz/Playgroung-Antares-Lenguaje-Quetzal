@@ -13,13 +13,13 @@
           "id": 2,
           "title": "Variables y tipos",
           "filename": "variables.qz",
-          "content": "entero edad = 25\nnúmero salario = 1250.50\ntexto nombre = \"Ana\"\nlog activo = verdadero\nlista<texto> habilidades = [\"Quetzal\", \"Rust\", \"JSON\"]"
+          "content": "entero edad = 25\nnumero salario = 1250.50\ntexto nombre = \"Ana\"\nlog activo = verdadero\nlista<texto> habilidades = [\"Quetzal\", \"Rust\", \"JSON\"]"
         },
         {
           "id": 3,
           "title": "Operaciones matemáticas",
           "filename": "operaciones.qz",
-          "content": "número resultado = 10.5 + 5.25\nnúmero diferencia = resultado - 3\nnúmero producto = resultado * 2\nnúmero division = resultado / 3\nconsola.mostrar(t\"Resultado final: {division}\")"
+          "content": "numero resultado = 10.5 + 5.25\nnumero diferencia = resultado - 3\nnumero producto = resultado * 2\nnumero division = resultado / 3\nconsola.mostrar(t\"Resultado final: {division}\")"
         }
       ]
     },
@@ -53,6 +53,17 @@
           "title": "Funciones básicas",
           "filename": "funciones.qz",
           "content": "texto saludar(texto nombre) {\n    retornar \"Hola \" + nombre\n}\n\nconsola.mostrar(saludar(\"María\"))"
+        }
+      ]
+    },
+    {
+      "title": "Objetos",
+      "content": [
+        {
+          "id": 1,
+          "title": "Objetos",
+          "filename": "Objetos.qz",
+          "content": "objeto Persona {\n    publico:\n        texto nombre\n        entero edad\n        \n        Persona(texto n, entero e) {\n            ambiente.nombre = n\n            ambiente.edad = e\n        }\n        \n        vacio saludar() {\n            imprimir(t\"Hola, soy {ambiente.nombre} y tengo {ambiente.edad} años.\")\n            imprimir(t\"Mi identificador privado es {ambiente.id}, no le digas a nadie, shhh!!!\")\n        }\n    \n    privado:\n        texto id = \"PER-001\"\n}\n\n// Uso del objeto\nPersona juan = nuevo Persona(\"Juan López\", 30)\njuan.saludar()"
         }
       ]
     }

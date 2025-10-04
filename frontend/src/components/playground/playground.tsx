@@ -6,8 +6,8 @@ import {Card} from "../ui/card.tsx";
 import {Button} from "../ui/button.tsx";
 import {Editor, useMonaco} from "@monaco-editor/react";
 import examplesData from '../../assets/examples.json';
-import {registerQuetzalLanguage} from "../../lib/register-lang.ts";
-
+import {registerQuetzalLanguage, setupQuetzalValidation} from "../../lib/register-lang.ts";
+import * as monaco from "monaco-editor";
 
 const transformExamplesToFileNodes = (data: typeof examplesData): FileNode[] => {
   return data.examples.map((category, categoryIndex) => {
@@ -74,7 +74,7 @@ export default function CodePlayground() {
       setActiveFileId(fileNodes[0].children[0].id);
     }
   }
-  const monaco = useMonaco();
+  const monacoInstance = useMonaco();
 
   useEffect(() => {
     handeInit();
@@ -83,9 +83,9 @@ export default function CodePlayground() {
 
   // use monaco load from https://stackoverflow.com/questions/78779441/monaco-editor-custom-language
   useEffect(() => {
-    if (!monaco) return
-    registerQuetzalLanguage(monaco);
-  }, [monaco]);
+    if (!monacoInstance) return
+    registerQuetzalLanguage(monacoInstance);
+  }, [monacoInstance]);
 
   const activeFile = files.find((f) => f.id === activeFileId) ||
     files.flatMap(f => f.children || []).find(f => f.id === activeFileId);
@@ -98,6 +98,9 @@ export default function CodePlayground() {
     }
   }
 
+  const handleEditorDidMount = (monacoInstance: typeof monaco) => {
+    setupQuetzalValidation(monacoInstance);
+  };
   const handleRun = async () => {
     if (!activeFile || !activeFileId) return
 
@@ -107,8 +110,8 @@ export default function CodePlayground() {
     try {
       const res = await fetch("/run", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: currentCode })
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({code: currentCode})
       });
 
       if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
@@ -183,7 +186,8 @@ export default function CodePlayground() {
         </div>
 
         <Card className="bg-[#0d1117] border-[#30363d] overflow-hidden flex flex-col flex-1 min-h-0">
-          <div className="flex items-center justify-between border-b border-[#30363d] px-4 py-2 bg-[#161b22] flex-shrink-0">
+          <div
+            className="flex items-center justify-between border-b border-[#30363d] px-4 py-2 bg-[#161b22] flex-shrink-0">
             <div className="flex items-center gap-2">
               <span className="font-mono text-sm text-[#7d8590]">{getLanguageLabel()}</span>
               {activeFile && (
@@ -218,8 +222,9 @@ export default function CodePlayground() {
             <Editor
               height="100%"
               language="quetzal"
-              theme="hc-black"
+              theme="quetzal"
               value={currentCode}
+              beforeMount={handleEditorDidMount}
               onChange={(e) => e !== undefined && handleCodeChange(e)}
               options={{
                 minimap: {enabled: true},
