@@ -2,8 +2,11 @@ import './App.css'
 import CodePlayground from "./components/playground/playground.tsx";
 import {TooltipContent} from "@radix-ui/react-tooltip";
 import {Tooltip, TooltipProvider, TooltipTrigger} from "./components/ui/tooltip.tsx";
+import {PWAUpdatePrompt} from "./components/pwa/update/PWAUpdatePrompt.tsx";
+import React from "react";
+import NetworkBanner from "./components/pwa/offline/NetworkBanner.tsx";
 
-function App() {
+const AppContent: React.FC = () => {
   return (
     <main className="flex flex-col min-h-screen bg-[#0d1117] dark">
       <div className="flex-1 flex flex-col container mx-auto px-3 py-2 min-h-0">
@@ -78,7 +81,6 @@ function App() {
           <CodePlayground/>
         </div>
       </div>
-
       <footer className="bg-[#0d1117] min-h-[48px] py-1 flex items-center justify-center">
         <div className="container mx-auto px-3 text-center">
           <p className="text-[10px] sm:text-xs text-[#7d8590]">
@@ -92,6 +94,16 @@ function App() {
         </div>
       </footer>
     </main>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <NetworkBanner/>
+      <AppContent/>
+      <PWAUpdatePrompt/>
+    </>
   )
 }
 

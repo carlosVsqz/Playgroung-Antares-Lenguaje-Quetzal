@@ -123,3 +123,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes slide-down {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out;
+}
+
+.pt-banner-safe {
+  padding-top: 40px;
+}
