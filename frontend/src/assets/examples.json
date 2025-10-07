@@ -64,6 +64,12 @@
           "title": "Objetos",
           "filename": "Objetos.qz",
           "content": "objeto Persona {\n    publico:\n        texto nombre\n        entero edad\n        \n        Persona(texto n, entero e) {\n            ambiente.nombre = n\n            ambiente.edad = e\n        }\n        \n        vacio saludar() {\n            imprimir(t\"Hola, soy {ambiente.nombre} y tengo {ambiente.edad} años.\")\n            imprimir(t\"Mi identificador privado es {ambiente.id}, no le digas a nadie, shhh!!!\")\n        }\n    \n    privado:\n        texto id = \"PER-001\"\n}\n\n// Uso del objeto\nPersona juan = nuevo Persona(\"Juan López\", 30)\njuan.saludar()"
+        },
+        {
+          "id": 2,
+          "title": "Objetos con librerías matemáticas",
+          "filename": "Objeto con librería.qz",
+          "content": "importar { Matemática } desde \"quetzal/matemática\"\n\nobjeto Punto {\n    privado:\n        entero var ejeX\n        entero var ejeY\n    público:\n        Punto(entero ejeX, entero ejeY){\n            ambiente.ejeX = ejeX\n            ambiente.ejeY = ejeY\n        }\n\n        entero obtenerX(){\n            retornar ambiente.ejeX\n        }\n\n        entero obtenerY(){\n            retornar ambiente.ejeY\n        }\n}\n\nlista var puntos = []\npuntos.agregar(nuevo Punto(3, 2))\npuntos.agregar(nuevo Punto(23, 43))\npuntos.agregar(nuevo Punto(1, 3))\n\nentero total_x = 0\nentero total_y = 0\n\npara (entero i = 0; i < puntos.longitud(); i++) {\n    total_x += puntos[i].obtenerX()\n    total_y += puntos[i].obtenerY()\n}\n\nnúmero punto_medio_x = total_x / puntos.longitud()\nnúmero punto_medio_y = total_y / puntos.longitud()\n\nconsola.mostrar(t\"El punto intermedio entre los objetos es: ({Matemática.redondear(punto_medio_x, 2)}, {Matemática.redondear(punto_medio_y, 2)})\")\n"
         }
       ]
     }

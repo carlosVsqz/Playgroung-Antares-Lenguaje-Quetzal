@@ -5,8 +5,8 @@ import {Tooltip, TooltipProvider, TooltipTrigger} from "./components/ui/tooltip.
 
 function App() {
   return (
-    <main className="h-screen bg-[#0d1117] dark flex flex-col overflow-hidden">
-      <div className="container mx-auto px-3 py-2 flex-1 flex flex-col min-h-0">
+    <main className="flex flex-col min-h-screen bg-[#0d1117] dark">
+      <div className="flex-1 flex flex-col container mx-auto px-3 py-2 min-h-0">
         <div className="mb-2 flex flex-col sm:flex-row items-center sm:items-start gap-2">
           <div className="flex items-center justify-center">
 
@@ -28,7 +28,7 @@ function App() {
             </TooltipProvider>
           </div>
           <div className="text-center sm:text-left flex-1">
-            <div className="container flex items-center justify-between">
+            <div className="flex items-center justify-between">
               <h1 className="text-lg sm:text-xl md:text-2xl mr-3 font-bold text-[#e6edf3]">
                 Patio de Juego Quetzal 🚀
               </h1>
@@ -58,7 +58,7 @@ function App() {
                 </Tooltip>
               </TooltipProvider>
             </div>
-            <p className="text-[#7d8590] text-shadow-md mt-1 hidden sm:block">
+            <p className="text-[#7d8590] text-shadow-md mt-1 text-start">
               El Patio de Juego Quetzal es un (playground) en inglés o entorno de
               desarrollo interactivo diseñado específicamente para experimentar con el
               <span className="wave-text ml-1">
@@ -79,18 +79,16 @@ function App() {
         </div>
       </div>
 
-      <footer className="border-t border-[#30363d] bg-[#0d1117] py-1 flex-shrink-0">
-        <div className="container mx-auto px-3">
-          <div className="text-center">
-            <p className="text-[10px] sm:text-xs text-[#7d8590]">
-              © 2025 Creado con ❤️ por
-              <a href="http://escod.com.gt/"
-                 target="_blank"
-                 className="ml-1 hover:text-[#e6edf3] transition-colors">
-                escod.com.gt
-              </a>
-            </p>
-          </div>
+      <footer className="bg-[#0d1117] min-h-[48px] py-1 flex items-center justify-center">
+        <div className="container mx-auto px-3 text-center">
+          <p className="text-[10px] sm:text-xs text-[#7d8590]">
+            © 2025 Creado con ❤️ por
+            <a href="http://escod.com.gt/"
+               target="_blank"
+               className="ml-1 hover:text-[#e6edf3] transition-colors">
+              escod.com.gt
+            </a>
+          </p>
         </div>
       </footer>
     </main>
