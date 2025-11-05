@@ -8,6 +8,7 @@ import {Editor, useMonaco} from "@monaco-editor/react";
 import examplesData from '../../assets/examples.json';
 import {registerQuetzalLanguage, setupQuetzalValidation} from "../../lib/register-lang.ts";
 import * as monaco from "monaco-editor";
+import {useIsMobile} from "../../hooks/useIsMobileStatus.ts";
 
 const transformExamplesToFileNodes = (data: typeof examplesData): FileNode[] => {
   return data.examples.map((category, categoryIndex) => {
@@ -63,6 +64,7 @@ export default function CodePlayground() {
   const [copied, setCopied] = useState(false);
   const [showFileExplorer, setShowFileExplorer] = useState(false);
   const [isValidToSend, setIsValidToSend] = useState(false);
+  const isMobile = useIsMobile();
 
   const handeInit = () => {
     const fileNodes = transformExamplesToFileNodes(examplesData);
@@ -215,9 +217,9 @@ export default function CodePlayground() {
               <Button
                 onClick={handleRun}
                 disabled={isRunning || !activeFile || isValidToSend}
-                className="bg-[#238636] text-white hover:bg-[#2ea043] h-8"
+                className="bg-[#238636] text-white hover:bg-[#2ea043] h-7 px-2 sm:px-4 text-xs sm:text-sm flex items-center gap-1 truncate max-w-[110px] sm:max-w-none"
               >
-                <Play className="h-3.5 w-3.5 mr-2"/>
+                <Play className="h-3.5 w-3.5 mr-1 sm:mr-2" />
                 {isRunning ? "Ejecutando..." : "Ejecutar código"}
               </Button>
             </div>
@@ -233,7 +235,7 @@ export default function CodePlayground() {
               onValidate={handleEditorValidate}
               onChange={(e) => e !== undefined && handleCodeChange(e)}
               options={{
-                minimap: {enabled: true},
+                minimap: {enabled: !isMobile},
                 fontSize: 14,
                 lineNumbers: "on",
                 scrollBeyondLastLine: false,

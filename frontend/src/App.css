@@ -54,3 +54,9 @@ img {
     color: #6ee7b7;
   }
 }
+
+@media (max-width: 768px) {
+  .monaco-editor {
+    height: 400px !important;
+  }
+}

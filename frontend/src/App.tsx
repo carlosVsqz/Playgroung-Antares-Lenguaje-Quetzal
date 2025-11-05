@@ -61,7 +61,7 @@ const AppContent: React.FC = () => {
                 </Tooltip>
               </TooltipProvider>
             </div>
-            <p className="text-[#7d8590] text-shadow-md mt-1 text-start">
+            <p className="text-[#7d8590] text-shadow-md mt-1 text-justify">
               El Patio de Juego Quetzal es un (playground) en inglés o entorno de
               desarrollo interactivo diseñado específicamente para experimentar con el
               <span className="wave-text ml-1">
